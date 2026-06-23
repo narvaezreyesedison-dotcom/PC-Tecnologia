@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TechSupport - GestiÛn de Tickets</title>
+<title>PC Tecnologia- Gesti√≥n de Tickets</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
   body { background: #f0f2f5; color: #333; }
@@ -175,7 +175,7 @@
     <div class="nav-item" onclick="showView('tickets')"><span class="icon">??</span><span>Tickets</span></div>
     <div class="nav-item" onclick="showView('clientes')"><span class="icon">??</span><span>Clientes</span></div>
     <div class="nav-item" onclick="showView('equipos')"><span class="icon">??</span><span>Equipos</span></div>
-    <div class="nav-item" onclick="showView('config')"><span class="icon">??</span><span>ConfiguraciÛn</span></div>
+    <div class="nav-item" onclick="showView('config')"><span class="icon">??</span><span>Configuraci√≥n</span></div>
   </aside>
 
   <!-- MAIN -->
@@ -199,15 +199,15 @@
     <!-- TICKETS -->
     <div id="view-tickets" class="view">
       <div class="header">
-        <h2>?? GestiÛn de Tickets</h2>
+        <h2>?? Gesti√≥n de Tickets</h2>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
           <input type="text" class="search-box" id="search-tickets" placeholder="?? Buscar..." oninput="renderTickets()">
           <select class="search-box" id="filter-status" onchange="renderTickets()" style="width:auto;">
             <option value="">Todos los estados</option>
             <option value="abierto">Abierto</option>
-            <option value="diagnostico">En DiagnÛstico</option>
+            <option value="diagnostico">En Diagn√≥stico</option>
             <option value="presupuestado">Presupuestado</option>
-            <option value="reparacion">En ReparaciÛn</option>
+            <option value="reparacion">En Reparaci√≥n</option>
             <option value="finalizado">Finalizado</option>
             <option value="entregado">Entregado</option>
           </select>
@@ -236,7 +236,7 @@
       <div class="panel">
         <div class="table-container">
           <table>
-            <thead><tr><th>Nombre</th><th>TelÈfono</th><th>Email</th><th>DNI/CUIT</th><th>DirecciÛn</th><th>Tickets</th><th>Acciones</th></tr></thead>
+            <thead><tr><th>Nombre</th><th>Tel√©fono</th><th>Email</th><th>DNI/CUIT</th><th>Direcci√≥n</th><th>Tickets</th><th>Acciones</th></tr></thead>
             <tbody id="clientes-table"></tbody>
           </table>
         </div>
@@ -264,7 +264,7 @@
 
     <!-- CONFIG -->
     <div id="view-config" class="view">
-      <div class="header"><h2>?? ConfiguraciÛn</h2></div>
+      <div class="header"><h2>?? Configuraci√≥n</h2></div>
       <div class="panel">
         <h3 class="panel-title" style="margin-bottom:15px;">?? Datos</h3>
         <p style="color:#6b7280; margin-bottom:15px;">Exporta tus datos para hacer backup o importarlos en otro dispositivo.</p>
@@ -276,8 +276,8 @@
         </div>
       </div>
       <div class="panel">
-        <h3 class="panel-title" style="margin-bottom:15px;">?? InformaciÛn</h3>
-        <div class="info-row"><span class="info-label">VersiÛn:</span><span class="info-value">1.0.0</span></div>
+        <h3 class="panel-title" style="margin-bottom:15px;">?? Informaci√≥n</h3>
+        <div class="info-row"><span class="info-label">Versi√≥n:</span><span class="info-value">1.0.0</span></div>
         <div class="info-row"><span class="info-label">Almacenamiento:</span><span class="info-value">localStorage (navegador)</span></div>
         <div class="info-row"><span class="info-label">Total Clientes:</span><span class="info-value" id="cfg-clientes">0</span></div>
         <div class="info-row"><span class="info-label">Total Equipos:</span><span class="info-value" id="cfg-equipos">0</span></div>
@@ -291,15 +291,15 @@
 <!-- MODAL CLIENTE -->
 <div class="modal-overlay" id="modal-cliente">
   <div class="modal">
-    <div class="modal-header"><h3 id="modal-cliente-title">Nuevo Cliente</h3><button class="modal-close" onclick="closeModal('modal-cliente')">◊</button></div>
+    <div class="modal-header"><h3 id="modal-cliente-title">Nuevo Cliente</h3><button class="modal-close" onclick="closeModal('modal-cliente')">√ó</button></div>
     <form id="form-cliente" onsubmit="saveCliente(event)">
       <input type="hidden" id="cliente-id">
       <div class="form-grid">
         <div class="form-group"><label>Nombre completo *</label><input type="text" id="cliente-nombre" required></div>
         <div class="form-group"><label>DNI/CUIT</label><input type="text" id="cliente-dni"></div>
-        <div class="form-group"><label>TelÈfono *</label><input type="tel" id="cliente-telefono" required></div>
+        <div class="form-group"><label>Tel√©fono *</label><input type="tel" id="cliente-telefono" required></div>
         <div class="form-group"><label>Email</label><input type="email" id="cliente-email"></div>
-        <div class="form-group" style="grid-column:1/-1;"><label>DirecciÛn</label><input type="text" id="cliente-direccion"></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Direcci√≥n</label><input type="text" id="cliente-direccion"></div>
         <div class="form-group" style="grid-column:1/-1;"><label>Notas</label><textarea id="cliente-notas"></textarea></div>
       </div>
       <div class="modal-footer">
@@ -313,7 +313,7 @@
 <!-- MODAL EQUIPO -->
 <div class="modal-overlay" id="modal-equipo">
   <div class="modal">
-    <div class="modal-header"><h3 id="modal-equipo-title">Nuevo Equipo</h3><button class="modal-close" onclick="closeModal('modal-equipo')">◊</button></div>
+    <div class="modal-header"><h3 id="modal-equipo-title">Nuevo Equipo</h3><button class="modal-close" onclick="closeModal('modal-equipo')">√ó</button></div>
     <form id="form-equipo" onsubmit="saveEquipo(event)">
       <input type="hidden" id="equipo-id">
       <div class="form-grid">
@@ -328,9 +328,9 @@
         </div>
         <div class="form-group"><label>Marca</label><input type="text" id="equipo-marca"></div>
         <div class="form-group"><label>Modelo</label><input type="text" id="equipo-modelo"></div>
-        <div class="form-group"><label>N∞ Serie</label><input type="text" id="equipo-serie"></div>
+        <div class="form-group"><label>N¬∞ Serie</label><input type="text" id="equipo-serie"></div>
         <div class="form-group"><label>Accesorios entregados</label><input type="text" id="equipo-accesorios" placeholder="Ej: Cargador, mouse..."></div>
-        <div class="form-group" style="grid-column:1/-1;"><label>Estado fÌsico</label><textarea id="equipo-estado" placeholder="Rayones, golpes, etc."></textarea></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Estado f√≠sico</label><textarea id="equipo-estado" placeholder="Rayones, golpes, etc."></textarea></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="closeModal('modal-equipo')">Cancelar</button>
@@ -343,7 +343,7 @@
 <!-- MODAL TICKET -->
 <div class="modal-overlay" id="modal-ticket">
   <div class="modal">
-    <div class="modal-header"><h3 id="modal-ticket-title">Nuevo Ticket</h3><button class="modal-close" onclick="closeModal('modal-ticket')">◊</button></div>
+    <div class="modal-header"><h3 id="modal-ticket-title">Nuevo Ticket</h3><button class="modal-close" onclick="closeModal('modal-ticket')">√ó</button></div>
     <form id="form-ticket" onsubmit="saveTicket(event)">
       <input type="hidden" id="ticket-id">
       <div class="form-grid">
@@ -356,7 +356,7 @@
             <option value="alta">Alta</option><option value="urgente">Urgente</option>
           </select>
         </div>
-        <div class="form-group"><label>TÈcnico asignado</label><input type="text" id="ticket-tecnico"></div>
+        <div class="form-group"><label>T√©cnico asignado</label><input type="text" id="ticket-tecnico"></div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="closeModal('modal-ticket')">Cancelar</button>
@@ -369,7 +369,7 @@
 <!-- MODAL DETALLE TICKET -->
 <div class="modal-overlay" id="modal-detalle">
   <div class="modal" style="max-width:850px;">
-    <div class="modal-header"><h3 id="detalle-title">Ticket</h3><button class="modal-close" onclick="closeModal('modal-detalle')">◊</button></div>
+    <div class="modal-header"><h3 id="detalle-title">Ticket</h3><button class="modal-close" onclick="closeModal('modal-detalle')">√ó</button></div>
     <div id="detalle-content"></div>
   </div>
 </div>
@@ -377,14 +377,14 @@
 <!-- MODAL DIAGNOSTICO -->
 <div class="modal-overlay" id="modal-diagnostico">
   <div class="modal">
-    <div class="modal-header"><h3>?? Registrar DiagnÛstico</h3><button class="modal-close" onclick="closeModal('modal-diagnostico')">◊</button></div>
+    <div class="modal-header"><h3>?? Registrar Diagn√≥stico</h3><button class="modal-close" onclick="closeModal('modal-diagnostico')">√ó</button></div>
     <form onsubmit="saveDiagnostico(event)">
       <input type="hidden" id="diag-ticket-id">
-      <div class="form-group"><label>DiagnÛstico tÈcnico *</label><textarea id="diag-texto" required placeholder="Describa lo encontrado en el equipo..."></textarea></div>
+      <div class="form-group"><label>Diagn√≥stico t√©cnico *</label><textarea id="diag-texto" required placeholder="Describa lo encontrado en el equipo..."></textarea></div>
       <div class="form-group"><label>Causa del problema</label><textarea id="diag-causa"></textarea></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="closeModal('modal-diagnostico')">Cancelar</button>
-        <button type="submit" class="btn btn-primary">Guardar DiagnÛstico</button>
+        <button type="submit" class="btn btn-primary">Guardar Diagn√≥stico</button>
       </div>
     </form>
   </div>
@@ -393,14 +393,14 @@
 <!-- MODAL PRESUPUESTO -->
 <div class="modal-overlay" id="modal-presupuesto">
   <div class="modal">
-    <div class="modal-header"><h3>?? Presupuesto</h3><button class="modal-close" onclick="closeModal('modal-presupuesto')">◊</button></div>
+    <div class="modal-header"><h3>?? Presupuesto</h3><button class="modal-close" onclick="closeModal('modal-presupuesto')">√ó</button></div>
     <form onsubmit="savePresupuesto(event)">
       <input type="hidden" id="pres-ticket-id">
       <div class="form-group"><label>Observaciones</label><textarea id="pres-obs"></textarea></div>
       <div class="form-group">
-        <label>Õtems del presupuesto</label>
+        <label>√çtems del presupuesto</label>
         <div id="pres-items"></div>
-        <button type="button" class="btn btn-secondary btn-sm" onclick="addItemRow()" style="margin-top:8px;">+ Agregar Ìtem</button>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addItemRow()" style="margin-top:8px;">+ Agregar √≠tem</button>
       </div>
       <div class="form-group">
         <strong>Total: $<span id="pres-total">0.00</span></strong>
@@ -416,15 +416,15 @@
 <!-- MODAL SOLUCION -->
 <div class="modal-overlay" id="modal-solucion">
   <div class="modal">
-    <div class="modal-header"><h3>? Registrar SoluciÛn</h3><button class="modal-close" onclick="closeModal('modal-solucion')">◊</button></div>
+    <div class="modal-header"><h3>? Registrar Soluci√≥n</h3><button class="modal-close" onclick="closeModal('modal-solucion')">√ó</button></div>
     <form onsubmit="saveSolucion(event)">
       <input type="hidden" id="sol-ticket-id">
-      <div class="form-group"><label>SoluciÛn aplicada *</label><textarea id="sol-texto" required placeholder="Describa los trabajos realizados..."></textarea></div>
+      <div class="form-group"><label>Soluci√≥n aplicada *</label><textarea id="sol-texto" required placeholder="Describa los trabajos realizados..."></textarea></div>
       <div class="form-group"><label>Repuestos utilizados</label><textarea id="sol-repuestos"></textarea></div>
       <div class="form-group"><label>Tiempo dedicado (minutos)</label><input type="number" id="sol-tiempo" min="0"></div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" onclick="closeModal('modal-solucion')">Cancelar</button>
-        <button type="submit" class="btn btn-success">Finalizar ReparaciÛn</button>
+        <button type="submit" class="btn btn-success">Finalizar Reparaci√≥n</button>
       </div>
     </form>
   </div>
@@ -475,7 +475,7 @@ function getCliente(id) { return db.clientes.find(c => c.id === id); }
 function getEquipo(id) { return db.equipos.find(e => e.id === id); }
 function getTicket(id) { return db.tickets.find(t => t.id === id); }
 function statusLabel(s) {
-  const map = {abierto:'Abierto', diagnostico:'En DiagnÛstico', presupuestado:'Presupuestado', reparacion:'En ReparaciÛn', finalizado:'Finalizado', entregado:'Entregado'};
+  const map = {abierto:'Abierto', diagnostico:'En Diagn√≥stico', presupuestado:'Presupuestado', reparacion:'En Reparaci√≥n', finalizado:'Finalizado', entregado:'Entregado'};
   return map[s] || s;
 }
 
@@ -489,16 +489,16 @@ function renderDashboard() {
   
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card"><div class="value">${db.tickets.length}</div><div class="label">Total Tickets</div></div>
-    <div class="stat-card orange"><div class="value">${abiertos}</div><div class="label">Abiertos / En DiagnÛstico</div></div>
+    <div class="stat-card orange"><div class="value">${abiertos}</div><div class="label">Abiertos / En Diagn√≥stico</div></div>
     <div class="stat-card purple"><div class="value">${pendientes}</div><div class="label">Presupuestos Pendientes</div></div>
-    <div class="stat-card red"><div class="value">${enRep}</div><div class="label">En ReparaciÛn</div></div>
+    <div class="stat-card red"><div class="value">${enRep}</div><div class="label">En Reparaci√≥n</div></div>
     <div class="stat-card green"><div class="value">${finalizados}</div><div class="label">Finalizados</div></div>
     <div class="stat-card"><div class="value">${db.clientes.length}</div><div class="label">Clientes</div></div>
   `;
   
   const recent = [...db.tickets].sort((a,b) => b.fechaCreacion - a.fechaCreacion).slice(0, 5);
   document.getElementById('recent-tickets').innerHTML = recent.length === 0 ? 
-    '<tr><td colspan="5" class="empty-state">No hay tickets a˙n</td></tr>' :
+    '<tr><td colspan="5" class="empty-state">No hay tickets a√∫n</td></tr>' :
     recent.map(t => {
       const c = getCliente(t.clienteId);
       const e = getEquipo(t.equipoId);
@@ -585,7 +585,7 @@ function saveCliente(e) {
 }
 
 function deleteCliente(id) {
-  if (!confirm('øEliminar este cliente? Sus equipos y tickets asociados quedar·n sin cliente.')) return;
+  if (!confirm('¬øEliminar este cliente? Sus equipos y tickets asociados quedar√°n sin cliente.')) return;
   db.clientes = db.clientes.filter(c => c.id !== id);
   saveDB();
   renderClientes();
@@ -671,7 +671,7 @@ function saveEquipo(e) {
 }
 
 function deleteEquipo(id) {
-  if (!confirm('øEliminar este equipo?')) return;
+  if (!confirm('¬øEliminar este equipo?')) return;
   db.equipos = db.equipos.filter(e => e.id !== id);
   saveDB();
   renderEquipos();
@@ -761,7 +761,7 @@ function saveTicket(e) {
 }
 
 function deleteTicket(id) {
-  if (!confirm('øEliminar este ticket?')) return;
+  if (!confirm('¬øEliminar este ticket?')) return;
   db.tickets = db.tickets.filter(t => t.id !== id);
   saveDB();
   renderTickets();
@@ -776,16 +776,16 @@ function viewTicket(id) {
   
   let html = `
     <div class="ticket-detail-section">
-      <h4>?? InformaciÛn General</h4>
+      <h4>?? Informaci√≥n General</h4>
       <div class="info-row"><span class="info-label">Estado:</span><span class="info-value"><span class="badge badge-${t.estado}">${statusLabel(t.estado)}</span></span></div>
       <div class="info-row"><span class="info-label">Prioridad:</span><span class="info-value">${t.prioridad || 'media'}</span></div>
-      <div class="info-row"><span class="info-label">TÈcnico:</span><span class="info-value">${t.tecnico || '-'}</span></div>
-      <div class="info-row"><span class="info-label">Fecha creaciÛn:</span><span class="info-value">${formatDate(t.fechaCreacion)}</span></div>
+      <div class="info-row"><span class="info-label">T√©cnico:</span><span class="info-value">${t.tecnico || '-'}</span></div>
+      <div class="info-row"><span class="info-label">Fecha creaci√≥n:</span><span class="info-value">${formatDate(t.fechaCreacion)}</span></div>
     </div>
     <div class="ticket-detail-section">
       <h4>?? Cliente</h4>
       <div class="info-row"><span class="info-label">Nombre:</span><span class="info-value">${c?c.nombre:'N/A'}</span></div>
-      <div class="info-row"><span class="info-label">TelÈfono:</span><span class="info-value">${c?c.telefono:'-'}</span></div>
+      <div class="info-row"><span class="info-label">Tel√©fono:</span><span class="info-value">${c?c.telefono:'-'}</span></div>
       <div class="info-row"><span class="info-label">Email:</span><span class="info-value">${c?c.email||'-':'-'}</span></div>
     </div>
     <div class="ticket-detail-section">
@@ -802,9 +802,9 @@ function viewTicket(id) {
   
   if (t.diagnostico) {
     html += `<div class="ticket-detail-section">
-      <h4>?? DiagnÛstico</h4>
+      <h4>?? Diagn√≥stico</h4>
       <div class="info-row"><span class="info-label">Fecha:</span><span class="info-value">${formatDate(t.diagnostico.fecha)}</span></div>
-      <div class="info-row"><span class="info-label">DiagnÛstico:</span><span class="info-value">${t.diagnostico.texto}</span></div>
+      <div class="info-row"><span class="info-label">Diagn√≥stico:</span><span class="info-value">${t.diagnostico.texto}</span></div>
       ${t.diagnostico.causa ? `<div class="info-row"><span class="info-label">Causa:</span><span class="info-value">${t.diagnostico.causa}</span></div>` : ''}
     </div>`;
   }
@@ -815,7 +815,7 @@ function viewTicket(id) {
       <h4>?? Presupuesto ${t.presupuesto.aprobado ? '<span class="badge badge-finalizado">APROBADO</span>' : '<span class="badge badge-diagnostico">PENDIENTE</span>'}</h4>
       ${t.presupuesto.observaciones ? `<p style="font-size:13px; color:#6b7280; margin-bottom:10px;">${t.presupuesto.observaciones}</p>` : ''}
       <table style="font-size:13px;">
-        <thead><tr><th>DescripciÛn</th><th>Cant.</th><th>P. Unit.</th><th>Subtotal</th></tr></thead>
+        <thead><tr><th>Descripci√≥n</th><th>Cant.</th><th>P. Unit.</th><th>Subtotal</th></tr></thead>
         <tbody>${t.presupuesto.items.map(i => `<tr>
           <td>${i.descripcion}</td><td>${i.cantidad}</td><td>$${parseFloat(i.precio).toFixed(2)}</td>
           <td><strong>$${(parseFloat(i.precio)*parseInt(i.cantidad)).toFixed(2)}</strong></td>
@@ -828,9 +828,9 @@ function viewTicket(id) {
   
   if (t.solucion) {
     html += `<div class="ticket-detail-section">
-      <h4>? SoluciÛn Aplicada</h4>
+      <h4>? Soluci√≥n Aplicada</h4>
       <div class="info-row"><span class="info-label">Fecha:</span><span class="info-value">${formatDate(t.solucion.fecha)}</span></div>
-      <div class="info-row"><span class="info-label">SoluciÛn:</span><span class="info-value">${t.solucion.texto}</span></div>
+      <div class="info-row"><span class="info-label">Soluci√≥n:</span><span class="info-value">${t.solucion.texto}</span></div>
       ${t.solucion.repuestos ? `<div class="info-row"><span class="info-label">Repuestos:</span><span class="info-value">${t.solucion.repuestos}</span></div>` : ''}
       ${t.solucion.tiempo ? `<div class="info-row"><span class="info-label">Tiempo:</span><span class="info-value">${t.solucion.tiempo} min</span></div>` : ''}
     </div>`;
@@ -843,23 +843,23 @@ function viewTicket(id) {
   });
   html += `</div></div>`;
   
-  // Botones de acciÛn seg˙n estado
+  // Botones de acci√≥n seg√∫n estado
   html += `<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">`;
   if (t.estado === 'abierto') {
-    html += `<button class="btn btn-warning" onclick="changeStatus(${t.id}, 'diagnostico')">?? Pasar a DiagnÛstico</button>`;
+    html += `<button class="btn btn-warning" onclick="changeStatus(${t.id}, 'diagnostico')">?? Pasar a Diagn√≥stico</button>`;
   }
   if (t.estado === 'diagnostico') {
-    html += `<button class="btn btn-primary" onclick="openDiagnostico(${t.id})">?? Registrar DiagnÛstico</button>`;
+    html += `<button class="btn btn-primary" onclick="openDiagnostico(${t.id})">?? Registrar Diagn√≥stico</button>`;
     html += `<button class="btn btn-success" onclick="openPresupuesto(${t.id})">?? Crear Presupuesto</button>`;
   }
   if (t.estado === 'presupuestado') {
     if (t.presupuesto && !t.presupuesto.aprobado) {
       html += `<button class="btn btn-success" onclick="aprobarPresupuesto(${t.id})">? Aprobar Presupuesto</button>`;
     }
-    html += `<button class="btn btn-primary" onclick="changeStatus(${t.id}, 'reparacion')">?? Iniciar ReparaciÛn</button>`;
+    html += `<button class="btn btn-primary" onclick="changeStatus(${t.id}, 'reparacion')">?? Iniciar Reparaci√≥n</button>`;
   }
   if (t.estado === 'reparacion') {
-    html += `<button class="btn btn-success" onclick="openSolucion(${t.id})">? Registrar SoluciÛn</button>`;
+    html += `<button class="btn btn-success" onclick="openSolucion(${t.id})">? Registrar Soluci√≥n</button>`;
   }
   if (t.estado === 'finalizado') {
     html += `<button class="btn btn-primary" onclick="changeStatus(${t.id}, 'entregado')">?? Marcar como Entregado</button>`;
@@ -900,7 +900,7 @@ function saveDiagnostico(e) {
     texto: document.getElementById('diag-texto').value,
     causa: document.getElementById('diag-causa').value,
   };
-  t.historial.push({fecha: Date.now(), tipo: 'diagnostico', texto: 'DiagnÛstico registrado'});
+  t.historial.push({fecha: Date.now(), tipo: 'diagnostico', texto: 'Diagn√≥stico registrado'});
   saveDB();
   closeModal('modal-diagnostico');
   closeModal('modal-detalle');
@@ -928,11 +928,11 @@ function addItemRow(item = null) {
   const row = document.createElement('div');
   row.className = 'item-row';
   row.innerHTML = `
-    <input type="text" placeholder="DescripciÛn" class="item-desc" value="${item?item.descripcion:''}">
+    <input type="text" placeholder="Descripci√≥n" class="item-desc" value="${item?item.descripcion:''}">
     <input type="number" placeholder="Cant." class="item-cant" value="${item?item.cantidad:1}" min="1" oninput="updateTotal()">
     <input type="number" placeholder="Precio" class="item-precio" value="${item?item.precio:''}" step="0.01" oninput="updateTotal()">
     <input type="text" class="item-subtotal" readonly value="$0.00">
-    <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); updateTotal();">◊</button>
+    <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); updateTotal();">√ó</button>
   `;
   container.appendChild(row);
   updateTotal();
@@ -1003,7 +1003,7 @@ function saveSolucion(e) {
     tiempo: document.getElementById('sol-tiempo').value,
   };
   t.estado = 'finalizado';
-  t.historial.push({fecha: Date.now(), tipo: 'solucion', texto: 'ReparaciÛn finalizada'});
+  t.historial.push({fecha: Date.now(), tipo: 'solucion', texto: 'Reparaci√≥n finalizada'});
   saveDB();
   closeModal('modal-solucion');
   closeModal('modal-detalle');
@@ -1036,7 +1036,7 @@ function importData(e) {
   reader.onload = (ev) => {
     try {
       const data = JSON.parse(ev.target.result);
-      if (!confirm('øReemplazar todos los datos actuales con los del archivo?')) return;
+      if (!confirm('¬øReemplazar todos los datos actuales con los del archivo?')) return;
       db = data;
       saveDB();
       alert('Datos importados correctamente');
@@ -1047,8 +1047,8 @@ function importData(e) {
 }
 
 function clearAllData() {
-  if (!confirm('?? øBorrar TODOS los datos? Esta acciÛn no se puede deshacer.')) return;
-  if (!confirm('øEst·s completamente seguro?')) return;
+  if (!confirm('?? ¬øBorrar TODOS los datos? Esta acci√≥n no se puede deshacer.')) return;
+  if (!confirm('¬øEst√°s completamente seguro?')) return;
   localStorage.clear();
   db = {clientes:[], equipos:[], tickets:[], nextCliente:1, nextEquipo:1, nextTicket:1};
   renderDashboard();
