@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PC Tecnologia- Gestión de Tickets</title>
+<title>PC Tecnologia - Gestión de Tickets</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
   body { background: #f0f2f5; color: #333; }
@@ -15,15 +15,15 @@
     width: 240px; background: linear-gradient(180deg, #1e3a8a, #1e40af);
     color: white; padding: 20px 0; position: fixed; height: 100vh; overflow-y: auto;
   }
-  .sidebar h1 { font-size: 20px; padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .sidebar h1 { font-size: 22px; padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; letter-spacing: 0.5px; }
   .sidebar h1 span { color: #60a5fa; }
   .nav-item {
-    padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 10px;
-    transition: background 0.2s; border-left: 3px solid transparent;
+    padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px;
+    transition: background 0.2s; border-left: 3px solid transparent; font-size: 15px;
   }
   .nav-item:hover { background: rgba(255,255,255,0.1); }
   .nav-item.active { background: rgba(96,165,250,0.2); border-left-color: #60a5fa; }
-  .nav-item .icon { font-size: 18px; }
+  .nav-item .icon { font-size: 18px; width: 24px; text-align: center; }
   
   /* MAIN */
   .main { margin-left: 240px; flex: 1; padding: 20px; }
@@ -31,7 +31,7 @@
     background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;
     display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
-  .header h2 { color: #1e3a8a; }
+  .header h2 { color: #1e3a8a; font-size: 24px; }
   
   /* CARDS */
   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
@@ -52,7 +52,7 @@
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
   .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
-  .panel-title { font-size: 18px; color: #1e3a8a; }
+  .panel-title { font-size: 18px; color: #1e3a8a; font-weight: 600; }
   
   /* BUTTONS */
   .btn {
@@ -170,12 +170,12 @@
 <div class="app">
   <!-- SIDEBAR -->
   <aside class="sidebar">
-    <h1>?? Tech<span>Support</span></h1>
-    <div class="nav-item active" onclick="showView('dashboard')"><span class="icon">??</span><span>Dashboard</span></div>
-    <div class="nav-item" onclick="showView('tickets')"><span class="icon">??</span><span>Tickets</span></div>
-    <div class="nav-item" onclick="showView('clientes')"><span class="icon">??</span><span>Clientes</span></div>
-    <div class="nav-item" onclick="showView('equipos')"><span class="icon">??</span><span>Equipos</span></div>
-    <div class="nav-item" onclick="showView('config')"><span class="icon">??</span><span>Configuración</span></div>
+    <h1>💻 PC<span>Tecnologia</span></h1>
+    <div class="nav-item active" onclick="showView('dashboard')"><span class="icon">📊</span><span>Dashboard</span></div>
+    <div class="nav-item" onclick="showView('tickets')"><span class="icon">🎫</span><span>Tickets</span></div>
+    <div class="nav-item" onclick="showView('clientes')"><span class="icon">👥</span><span>Clientes</span></div>
+    <div class="nav-item" onclick="showView('equipos')"><span class="icon">💻</span><span>Equipos</span></div>
+    <div class="nav-item" onclick="showView('config')"><span class="icon">⚙️</span><span>Configuración</span></div>
   </aside>
 
   <!-- MAIN -->
@@ -183,10 +183,10 @@
     
     <!-- DASHBOARD -->
     <div id="view-dashboard" class="view active">
-      <div class="header"><h2>?? Dashboard</h2><div id="date-display"></div></div>
+      <div class="header"><h2>📊 Dashboard</h2><div id="date-display"></div></div>
       <div class="stats-grid" id="stats-grid"></div>
       <div class="panel">
-        <div class="panel-header"><h3 class="panel-title">?? Tickets Recientes</h3></div>
+        <div class="panel-header"><h3 class="panel-title"> Tickets Recientes</h3></div>
         <div class="table-container">
           <table>
             <thead><tr><th>#</th><th>Cliente</th><th>Equipo</th><th>Estado</th><th>Fecha</th></tr></thead>
@@ -199,9 +199,9 @@
     <!-- TICKETS -->
     <div id="view-tickets" class="view">
       <div class="header">
-        <h2>?? Gestión de Tickets</h2>
+        <h2> Gestión de Tickets</h2>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <input type="text" class="search-box" id="search-tickets" placeholder="?? Buscar..." oninput="renderTickets()">
+          <input type="text" class="search-box" id="search-tickets" placeholder="🔍 Buscar ticket..." oninput="renderTickets()">
           <select class="search-box" id="filter-status" onchange="renderTickets()" style="width:auto;">
             <option value="">Todos los estados</option>
             <option value="abierto">Abierto</option>
@@ -227,9 +227,9 @@
     <!-- CLIENTES -->
     <div id="view-clientes" class="view">
       <div class="header">
-        <h2>?? Clientes</h2>
+        <h2> Clientes</h2>
         <div style="display:flex; gap:10px;">
-          <input type="text" class="search-box" id="search-clientes" placeholder="?? Buscar..." oninput="renderClientes()">
+          <input type="text" class="search-box" id="search-clientes" placeholder="🔍 Buscar cliente..." oninput="renderClientes()">
           <button class="btn btn-primary" onclick="openClienteModal()">+ Nuevo Cliente</button>
         </div>
       </div>
@@ -246,9 +246,9 @@
     <!-- EQUIPOS -->
     <div id="view-equipos" class="view">
       <div class="header">
-        <h2>?? Equipos Registrados</h2>
+        <h2>💻 Equipos Registrados</h2>
         <div style="display:flex; gap:10px;">
-          <input type="text" class="search-box" id="search-equipos" placeholder="?? Buscar..." oninput="renderEquipos()">
+          <input type="text" class="search-box" id="search-equipos" placeholder="🔍 Buscar equipo..." oninput="renderEquipos()">
           <button class="btn btn-primary" onclick="openEquipoModal()">+ Nuevo Equipo</button>
         </div>
       </div>
@@ -264,19 +264,19 @@
 
     <!-- CONFIG -->
     <div id="view-config" class="view">
-      <div class="header"><h2>?? Configuración</h2></div>
+      <div class="header"><h2>️ Configuración</h2></div>
       <div class="panel">
-        <h3 class="panel-title" style="margin-bottom:15px;">?? Datos</h3>
+        <h3 class="panel-title" style="margin-bottom:15px;">💾 Datos del Sistema</h3>
         <p style="color:#6b7280; margin-bottom:15px;">Exporta tus datos para hacer backup o importarlos en otro dispositivo.</p>
         <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn btn-success" onclick="exportData()">?? Exportar Datos (JSON)</button>
-          <button class="btn btn-warning" onclick="document.getElementById('import-file').click()">?? Importar Datos</button>
+          <button class="btn btn-success" onclick="exportData()">📥 Exportar Datos (JSON)</button>
+          <button class="btn btn-warning" onclick="document.getElementById('import-file').click()"> Importar Datos</button>
           <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
-          <button class="btn btn-danger" onclick="clearAllData()">??? Borrar Todo</button>
+          <button class="btn btn-danger" onclick="clearAllData()">🗑️ Borrar Todo</button>
         </div>
       </div>
       <div class="panel">
-        <h3 class="panel-title" style="margin-bottom:15px;">?? Información</h3>
+        <h3 class="panel-title" style="margin-bottom:15px;">ℹ️ Información</h3>
         <div class="info-row"><span class="info-label">Versión:</span><span class="info-value">1.0.0</span></div>
         <div class="info-row"><span class="info-label">Almacenamiento:</span><span class="info-value">localStorage (navegador)</span></div>
         <div class="info-row"><span class="info-label">Total Clientes:</span><span class="info-value" id="cfg-clientes">0</span></div>
@@ -377,7 +377,7 @@
 <!-- MODAL DIAGNOSTICO -->
 <div class="modal-overlay" id="modal-diagnostico">
   <div class="modal">
-    <div class="modal-header"><h3>?? Registrar Diagnóstico</h3><button class="modal-close" onclick="closeModal('modal-diagnostico')">×</button></div>
+    <div class="modal-header"><h3>🔍 Registrar Diagnóstico</h3><button class="modal-close" onclick="closeModal('modal-diagnostico')">×</button></div>
     <form onsubmit="saveDiagnostico(event)">
       <input type="hidden" id="diag-ticket-id">
       <div class="form-group"><label>Diagnóstico técnico *</label><textarea id="diag-texto" required placeholder="Describa lo encontrado en el equipo..."></textarea></div>
@@ -393,7 +393,7 @@
 <!-- MODAL PRESUPUESTO -->
 <div class="modal-overlay" id="modal-presupuesto">
   <div class="modal">
-    <div class="modal-header"><h3>?? Presupuesto</h3><button class="modal-close" onclick="closeModal('modal-presupuesto')">×</button></div>
+    <div class="modal-header"><h3>💰 Presupuesto</h3><button class="modal-close" onclick="closeModal('modal-presupuesto')">×</button></div>
     <form onsubmit="savePresupuesto(event)">
       <input type="hidden" id="pres-ticket-id">
       <div class="form-group"><label>Observaciones</label><textarea id="pres-obs"></textarea></div>
@@ -416,7 +416,7 @@
 <!-- MODAL SOLUCION -->
 <div class="modal-overlay" id="modal-solucion">
   <div class="modal">
-    <div class="modal-header"><h3>? Registrar Solución</h3><button class="modal-close" onclick="closeModal('modal-solucion')">×</button></div>
+    <div class="modal-header"><h3>✅ Registrar Solución</h3><button class="modal-close" onclick="closeModal('modal-solucion')">×</button></div>
     <form onsubmit="saveSolucion(event)">
       <input type="hidden" id="sol-ticket-id">
       <div class="form-group"><label>Solución aplicada *</label><textarea id="sol-texto" required placeholder="Describa los trabajos realizados..."></textarea></div>
@@ -533,8 +533,8 @@ function renderClientes() {
         <td>${c.direccion || '-'}</td>
         <td><span class="badge badge-abierto">${count}</span></td>
         <td class="actions-cell">
-          <button class="btn btn-primary btn-sm" onclick="editCliente(${c.id})">??</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteCliente(${c.id})">???</button>
+          <button class="btn btn-primary btn-sm" onclick="editCliente(${c.id})">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCliente(${c.id})">🗑️</button>
         </td>
       </tr>`;
     }).join('');
@@ -611,8 +611,8 @@ function renderEquipos() {
         <td>${c ? c.nombre : 'N/A'}</td>
         <td>${e.accesorios || '-'}</td>
         <td class="actions-cell">
-          <button class="btn btn-primary btn-sm" onclick="editEquipo(${e.id})">??</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteEquipo(${e.id})">???</button>
+          <button class="btn btn-primary btn-sm" onclick="editEquipo(${e.id})">✏️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteEquipo(${e.id})">🗑️</button>
         </td>
       </tr>`;
     }).join('');
@@ -705,8 +705,8 @@ function renderTickets() {
         <td>${total > 0 ? '$'+total.toFixed(2) : '-'}</td>
         <td>${formatDate(t.fechaCreacion)}</td>
         <td class="actions-cell">
-          <button class="btn btn-primary btn-sm" onclick="viewTicket(${t.id})">???</button>
-          <button class="btn btn-danger btn-sm" onclick="deleteTicket(${t.id})">???</button>
+          <button class="btn btn-primary btn-sm" onclick="viewTicket(${t.id})">👁️</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteTicket(${t.id})">️</button>
         </td>
       </tr>`;
     }).join('');
@@ -776,33 +776,33 @@ function viewTicket(id) {
   
   let html = `
     <div class="ticket-detail-section">
-      <h4>?? Información General</h4>
+      <h4>📋 Información General</h4>
       <div class="info-row"><span class="info-label">Estado:</span><span class="info-value"><span class="badge badge-${t.estado}">${statusLabel(t.estado)}</span></span></div>
       <div class="info-row"><span class="info-label">Prioridad:</span><span class="info-value">${t.prioridad || 'media'}</span></div>
       <div class="info-row"><span class="info-label">Técnico:</span><span class="info-value">${t.tecnico || '-'}</span></div>
       <div class="info-row"><span class="info-label">Fecha creación:</span><span class="info-value">${formatDate(t.fechaCreacion)}</span></div>
     </div>
     <div class="ticket-detail-section">
-      <h4>?? Cliente</h4>
+      <h4>👤 Cliente</h4>
       <div class="info-row"><span class="info-label">Nombre:</span><span class="info-value">${c?c.nombre:'N/A'}</span></div>
       <div class="info-row"><span class="info-label">Teléfono:</span><span class="info-value">${c?c.telefono:'-'}</span></div>
       <div class="info-row"><span class="info-label">Email:</span><span class="info-value">${c?c.email||'-':'-'}</span></div>
     </div>
     <div class="ticket-detail-section">
-      <h4>?? Equipo</h4>
+      <h4>💻 Equipo</h4>
       <div class="info-row"><span class="info-label">Tipo:</span><span class="info-value">${e?e.tipo:'N/A'}</span></div>
       <div class="info-row"><span class="info-label">Marca/Modelo:</span><span class="info-value">${e?`${e.marca||''} ${e.modelo||''}`:'-'}</span></div>
       <div class="info-row"><span class="info-label">Serie:</span><span class="info-value">${e?e.serie||'-':'-'}</span></div>
       <div class="info-row"><span class="info-label">Accesorios:</span><span class="info-value">${e?e.accesorios||'-':'-'}</span></div>
     </div>
     <div class="ticket-detail-section">
-      <h4>?? Falla Reportada</h4>
+      <h4>🔧 Falla Reportada</h4>
       <p style="font-size:14px; color:#374151;">${t.motivo}</p>
     </div>`;
   
   if (t.diagnostico) {
     html += `<div class="ticket-detail-section">
-      <h4>?? Diagnóstico</h4>
+      <h4>🔍 Diagnóstico</h4>
       <div class="info-row"><span class="info-label">Fecha:</span><span class="info-value">${formatDate(t.diagnostico.fecha)}</span></div>
       <div class="info-row"><span class="info-label">Diagnóstico:</span><span class="info-value">${t.diagnostico.texto}</span></div>
       ${t.diagnostico.causa ? `<div class="info-row"><span class="info-label">Causa:</span><span class="info-value">${t.diagnostico.causa}</span></div>` : ''}
@@ -812,7 +812,7 @@ function viewTicket(id) {
   if (t.presupuesto) {
     const total = t.presupuesto.items.reduce((s,i) => s + (parseFloat(i.precio)||0) * (parseInt(i.cantidad)||1), 0);
     html += `<div class="ticket-detail-section">
-      <h4>?? Presupuesto ${t.presupuesto.aprobado ? '<span class="badge badge-finalizado">APROBADO</span>' : '<span class="badge badge-diagnostico">PENDIENTE</span>'}</h4>
+      <h4>💰 Presupuesto ${t.presupuesto.aprobado ? '<span class="badge badge-finalizado">APROBADO</span>' : '<span class="badge badge-diagnostico">PENDIENTE</span>'}</h4>
       ${t.presupuesto.observaciones ? `<p style="font-size:13px; color:#6b7280; margin-bottom:10px;">${t.presupuesto.observaciones}</p>` : ''}
       <table style="font-size:13px;">
         <thead><tr><th>Descripción</th><th>Cant.</th><th>P. Unit.</th><th>Subtotal</th></tr></thead>
@@ -828,7 +828,7 @@ function viewTicket(id) {
   
   if (t.solucion) {
     html += `<div class="ticket-detail-section">
-      <h4>? Solución Aplicada</h4>
+      <h4>✅ Solución Aplicada</h4>
       <div class="info-row"><span class="info-label">Fecha:</span><span class="info-value">${formatDate(t.solucion.fecha)}</span></div>
       <div class="info-row"><span class="info-label">Solución:</span><span class="info-value">${t.solucion.texto}</span></div>
       ${t.solucion.repuestos ? `<div class="info-row"><span class="info-label">Repuestos:</span><span class="info-value">${t.solucion.repuestos}</span></div>` : ''}
@@ -837,7 +837,7 @@ function viewTicket(id) {
   }
   
   // Historial
-  html += `<div class="ticket-detail-section"><h4>?? Historial</h4><div class="timeline">`;
+  html += `<div class="ticket-detail-section"><h4>📜 Historial</h4><div class="timeline">`;
   (t.historial || []).slice().reverse().forEach(h => {
     html += `<div class="timeline-item"><div class="timeline-date">${formatDate(h.fecha)}</div><div class="timeline-content">${h.texto}</div></div>`;
   });
@@ -846,26 +846,26 @@ function viewTicket(id) {
   // Botones de acción según estado
   html += `<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">`;
   if (t.estado === 'abierto') {
-    html += `<button class="btn btn-warning" onclick="changeStatus(${t.id}, 'diagnostico')">?? Pasar a Diagnóstico</button>`;
+    html += `<button class="btn btn-warning" onclick="changeStatus(${t.id}, 'diagnostico')">🔍 Pasar a Diagnóstico</button>`;
   }
   if (t.estado === 'diagnostico') {
-    html += `<button class="btn btn-primary" onclick="openDiagnostico(${t.id})">?? Registrar Diagnóstico</button>`;
-    html += `<button class="btn btn-success" onclick="openPresupuesto(${t.id})">?? Crear Presupuesto</button>`;
+    html += `<button class="btn btn-primary" onclick="openDiagnostico(${t.id})">📝 Registrar Diagnóstico</button>`;
+    html += `<button class="btn btn-success" onclick="openPresupuesto(${t.id})">💰 Crear Presupuesto</button>`;
   }
   if (t.estado === 'presupuestado') {
     if (t.presupuesto && !t.presupuesto.aprobado) {
-      html += `<button class="btn btn-success" onclick="aprobarPresupuesto(${t.id})">? Aprobar Presupuesto</button>`;
+      html += `<button class="btn btn-success" onclick="aprobarPresupuesto(${t.id})">✅ Aprobar Presupuesto</button>`;
     }
-    html += `<button class="btn btn-primary" onclick="changeStatus(${t.id}, 'reparacion')">?? Iniciar Reparación</button>`;
+    html += `<button class="btn btn-primary" onclick="changeStatus(${t.id}, 'reparacion')">🔧 Iniciar Reparación</button>`;
   }
   if (t.estado === 'reparacion') {
-    html += `<button class="btn btn-success" onclick="openSolucion(${t.id})">? Registrar Solución</button>`;
+    html += `<button class="btn btn-success" onclick="openSolucion(${t.id})">✅ Registrar Solución</button>`;
   }
   if (t.estado === 'finalizado') {
-    html += `<button class="btn btn-primary" onclick="changeStatus(${t.id}, 'entregado')">?? Marcar como Entregado</button>`;
+    html += `<button class="btn btn-primary" onclick="changeStatus(${t.id}, 'entregado')">📦 Marcar como Entregado</button>`;
   }
   if (t.estado !== 'entregado') {
-    html += `<button class="btn btn-danger" onclick="changeStatus(${t.id}, 'abierto')">?? Reabrir</button>`;
+    html += `<button class="btn btn-danger" onclick="changeStatus(${t.id}, 'abierto')">↩️ Reabrir</button>`;
   }
   html += `</div>`;
   
@@ -1024,7 +1024,7 @@ function exportData() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `soporte-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.download = `pc-tecnologia-backup-${new Date().toISOString().split('T')[0]}.json`;
   a.click();
   URL.revokeObjectURL(url);
 }
@@ -1047,7 +1047,7 @@ function importData(e) {
 }
 
 function clearAllData() {
-  if (!confirm('?? ¿Borrar TODOS los datos? Esta acción no se puede deshacer.')) return;
+  if (!confirm('⚠️ ¿Borrar TODOS los datos? Esta acción no se puede deshacer.')) return;
   if (!confirm('¿Estás completamente seguro?')) return;
   localStorage.clear();
   db = {clientes:[], equipos:[], tickets:[], nextCliente:1, nextEquipo:1, nextTicket:1};
