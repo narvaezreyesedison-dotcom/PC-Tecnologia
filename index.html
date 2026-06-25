@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PC Tecnologia - Gestión de Tickets</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
+  body { background: #f0f2f5; color: #333; }
+  
+  .app { display: flex; min-height: 100vh; }
+  
+  /* SIDEBAR */
+  .sidebar {
+    width: 240px; background: linear-gradient(180deg, #1e3a8a, #1e40af);
+    color: white; padding: 20px 0; position: fixed; height: 100vh; overflow-y: auto;
+  }
+  .sidebar h1 { font-size: 22px; padding: 0 20px 20px; border-bottom: 1px solid rgba(255,255,255,0.1); font-weight: bold; letter-spacing: 0.5px; }
+  .sidebar h1 span { color: #60a5fa; }
+  .nav-item {
+    padding: 12px 20px; cursor: pointer; display: flex; align-items: center; gap: 12px;
+    transition: background 0.2s; border-left: 3px solid transparent; font-size: 15px;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.1); }
+  .nav-item.active { background: rgba(96,165,250,0.2); border-left-color: #60a5fa; }
+  .nav-item .icon { font-size: 18px; width: 24px; text-align: center; }
+  
+  /* MAIN */
+  .main { margin-left: 240px; flex: 1; padding: 20px; }
+  .header {
+    background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px;
+    display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .header h2 { color: #1e3a8a; font-size: 24px; }
+  
+  /* CARDS */
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 20px; }
+  .stat-card {
+    background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    border-left: 4px solid #3b82f6;
+  }
+  .stat-card.green { border-left-color: #10b981; }
+  .stat-card.orange { border-left-color: #f59e0b; }
+  .stat-card.red { border-left-color: #ef4444; }
+  .stat-card.purple { border-left-color: #8b5cf6; }
+  .stat-card .value { font-size: 32px; font-weight: bold; color: #1e3a8a; }
+  .stat-card .label { color: #666; font-size: 14px; margin-top: 5px; }
+  
+  /* PANELS */
+  .panel {
+    background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  }
+  .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px; }
+  .panel-title { font-size: 18px; color: #1e3a8a; font-weight: 600; }
+  
+  /* BUTTONS */
+  .btn {
+    padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;
+    font-size: 14px; font-weight: 500; transition: all 0.2s; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary { background: #3b82f6; color: white; }
+  .btn-primary:hover { background: #2563eb; }
+  .btn-success { background: #10b981; color: white; }
+  .btn-success:hover { background: #059669; }
+  .btn-danger { background: #ef4444; color: white; }
+  .btn-danger:hover { background: #dc2626; }
+  .btn-warning { background: #f59e0b; color: white; }
+  .btn-warning:hover { background: #d97706; }
+  .btn-secondary { background: #6b7280; color: white; }
+  .btn-secondary:hover { background: #4b5563; }
+  .btn-sm { padding: 5px 10px; font-size: 12px; }
+  
+  /* FORMS */
+  .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+  .form-group { margin-bottom: 15px; }
+  .form-group label { display: block; margin-bottom: 5px; font-weight: 500; color: #374151; font-size: 14px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px;
+    font-size: 14px; transition: border 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none; border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1);
+  }
+  .form-group textarea { resize: vertical; min-height: 80px; }
+  
+  /* TABLE */
+  .table-container { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; }
+  th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e5e7eb; }
+  th { background: #f9fafb; font-weight: 600; color: #374151; font-size: 13px; text-transform: uppercase; }
+  tr:hover { background: #f9fafb; }
+  
+  /* BADGES */
+  .badge {
+    padding: 4px 10px; border-radius: 12px; font-size: 11px; font-weight: 600;
+    text-transform: uppercase; display: inline-block;
+  }
+  .badge-abierto { background: #dbeafe; color: #1e40af; }
+  .badge-diagnostico { background: #fef3c7; color: #92400e; }
+  .badge-presupuestado { background: #e0e7ff; color: #3730a3; }
+  .badge-reparacion { background: #fed7aa; color: #9a3412; }
+  .badge-finalizado { background: #d1fae5; color: #065f46; }
+  .badge-entregado { background: #e5e7eb; color: #374151; }
+  
+  /* MODAL */
+  .modal-overlay {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: flex-start;
+    padding: 20px; overflow-y: auto;
+  }
+  .modal-overlay.active { display: flex; }
+  .modal {
+    background: white; border-radius: 10px; padding: 25px; width: 100%; max-width: 700px;
+    margin-top: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e5e7eb; }
+  .modal-header h3 { color: #1e3a8a; }
+  .modal-close { background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280; }
+  .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; padding-top: 15px; border-top: 1px solid #e5e7eb; }
+  
+  /* SEARCH */
+  .search-box {
+    padding: 8px 12px; border: 1px solid #d1d5db; border-radius: 6px;
+    width: 250px; font-size: 14px;
+  }
+  
+  /* TIMELINE */
+  .timeline { border-left: 2px solid #3b82f6; padding-left: 20px; margin: 15px 0; }
+  .timeline-item { position: relative; margin-bottom: 15px; padding: 10px; background: #f9fafb; border-radius: 6px; }
+  .timeline-item::before {
+    content: ''; position: absolute; left: -26px; top: 15px; width: 12px; height: 12px;
+    background: #3b82f6; border-radius: 50%; border: 2px solid white;
+  }
+  .timeline-date { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
+  .timeline-content { font-size: 14px; }
+  
+  /* ITEMS BUDGET */
+  .item-row { display: grid; grid-template-columns: 2fr 80px 100px 100px 40px; gap: 8px; margin-bottom: 8px; align-items: center; }
+  .item-row input { padding: 6px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 13px; }
+  
+  /* VIEWS */
+  .view { display: none; }
+  .view.active { display: block; }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .sidebar { width: 60px; }
+    .sidebar h1, .nav-item span:not(.icon) { display: none; }
+    .main { margin-left: 60px; padding: 10px; }
+    .search-box { width: 100%; }
+    .item-row { grid-template-columns: 1fr; }
+  }
+  
+  .empty-state { text-align: center; padding: 40px; color: #9ca3af; }
+  .empty-state .icon { font-size: 48px; margin-bottom: 10px; }
+  
+  .actions-cell { display: flex; gap: 5px; flex-wrap: wrap; }
+  
+  .ticket-detail-section { background: #f9fafb; padding: 15px; border-radius: 8px; margin-bottom: 15px; }
+  .ticket-detail-section h4 { color: #1e3a8a; margin-bottom: 10px; font-size: 15px; }
+  
+  .info-row { display: flex; padding: 6px 0; border-bottom: 1px solid #e5e7eb; }
+  .info-row:last-child { border-bottom: none; }
+  .info-label { font-weight: 600; color: #6b7280; min-width: 140px; font-size: 13px; }
+  .info-value { color: #111827; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <h1>?? PC<span>Tecnologia</span></h1>
+    <div class="nav-item active" onclick="showView('dashboard')"><span class="icon">??</span><span>Dashboard</span></div>
+    <div class="nav-item" onclick="showView('tickets')"><span class="icon">??</span><span>Tickets</span></div>
+    <div class="nav-item" onclick="showView('clientes')"><span class="icon">??</span><span>Clientes</span></div>
+    <div class="nav-item" onclick="showView('equipos')"><span class="icon">??</span><span>Equipos</span></div>
+    <div class="nav-item" onclick="showView('config')"><span class="icon">??</span><span>Configuración</span></div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    
+    <!-- DASHBOARD -->
+    <div id="view-dashboard" class="view active">
+      <div class="header"><h2>?? Dashboard</h2><div id="date-display"></div></div>
+      <div class="stats-grid" id="stats-grid"></div>
+      <div class="panel">
+        <div class="panel-header"><h3 class="panel-title"> Tickets Recientes</h3></div>
+        <div class="table-container">
+          <table>
+            <thead><tr><th>#</th><th>Cliente</th><th>Equipo</th><th>Estado</th><th>Fecha</th></tr></thead>
+            <tbody id="recent-tickets"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TICKETS -->
+    <div id="view-tickets" class="view">
+      <div class="header">
+        <h2> Gestión de Tickets</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <input type="text" class="search-box" id="search-tickets" placeholder="?? Buscar ticket..." oninput="renderTickets()">
+          <select class="search-box" id="filter-status" onchange="renderTickets()" style="width:auto;">
+            <option value="">Todos los estados</option>
+            <option value="abierto">Abierto</option>
+            <option value="diagnostico">En Diagnóstico</option>
+            <option value="presupuestado">Presupuestado</option>
+            <option value="reparacion">En Reparación</option>
+            <option value="finalizado">Finalizado</option>
+            <option value="entregado">Entregado</option>
+          </select>
+          <button class="btn btn-primary" onclick="openTicketModal()">+ Nuevo Ticket</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-container">
+          <table>
+            <thead><tr><th>#</th><th>Cliente</th><th>Equipo</th><th>Problema</th><th>Estado</th><th>Presupuesto</th><th>Fecha</th><th>Acciones</th></tr></thead>
+            <tbody id="tickets-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLIENTES -->
+    <div id="view-clientes" class="view">
+      <div class="header">
+        <h2> Clientes</h2>
+        <div style="display:flex; gap:10px;">
+          <input type="text" class="search-box" id="search-clientes" placeholder="?? Buscar cliente..." oninput="renderClientes()">
+          <button class="btn btn-primary" onclick="openClienteModal()">+ Nuevo Cliente</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Nombre</th><th>Teléfono</th><th>Email</th><th>DNI/CUIT</th><th>Dirección</th><th>Tickets</th><th>Acciones</th></tr></thead>
+            <tbody id="clientes-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- EQUIPOS -->
+    <div id="view-equipos" class="view">
+      <div class="header">
+        <h2>?? Equipos Registrados</h2>
+        <div style="display:flex; gap:10px;">
+          <input type="text" class="search-box" id="search-equipos" placeholder="?? Buscar equipo..." oninput="renderEquipos()">
+          <button class="btn btn-primary" onclick="openEquipoModal()">+ Nuevo Equipo</button>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="table-container">
+          <table>
+            <thead><tr><th>Tipo</th><th>Marca/Modelo</th><th>Serie</th><th>Cliente</th><th>Accesorios</th><th>Acciones</th></tr></thead>
+            <tbody id="equipos-table"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIG -->
+    <div id="view-config" class="view">
+      <div class="header"><h2>? Configuración</h2></div>
+      <div class="panel">
+        <h3 class="panel-title" style="margin-bottom:15px;">?? Datos del Sistema</h3>
+        <p style="color:#6b7280; margin-bottom:15px;">Exporta tus datos para hacer backup o importarlos en otro dispositivo.</p>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-success" onclick="exportData()">?? Exportar Datos (JSON)</button>
+          <button class="btn btn-warning" onclick="document.getElementById('import-file').click()"> Importar Datos</button>
+          <input type="file" id="import-file" accept=".json" style="display:none;" onchange="importData(event)">
+          <button class="btn btn-danger" onclick="clearAllData()">??? Borrar Todo</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h3 class="panel-title" style="margin-bottom:15px;">?? Información</h3>
+        <div class="info-row"><span class="info-label">Versión:</span><span class="info-value">1.0.0</span></div>
+        <div class="info-row"><span class="info-label">Almacenamiento:</span><span class="info-value">localStorage (navegador)</span></div>
+        <div class="info-row"><span class="info-label">Total Clientes:</span><span class="info-value" id="cfg-clientes">0</span></div>
+        <div class="info-row"><span class="info-label">Total Equipos:</span><span class="info-value" id="cfg-equipos">0</span></div>
+        <div class="info-row"><span class="info-label">Total Tickets:</span><span class="info-value" id="cfg-tickets">0</span></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- MODAL CLIENTE -->
+<div class="modal-overlay" id="modal-cliente">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-cliente-title">Nuevo Cliente</h3><button class="modal-close" onclick="closeModal('modal-cliente')">×</button></div>
+    <form id="form-cliente" onsubmit="saveCliente(event)">
+      <input type="hidden" id="cliente-id">
+      <div class="form-grid">
+        <div class="form-group"><label>Nombre completo *</label><input type="text" id="cliente-nombre" required></div>
+        <div class="form-group"><label>DNI/CUIT</label><input type="text" id="cliente-dni"></div>
+        <div class="form-group"><label>Teléfono *</label><input type="tel" id="cliente-telefono" required></div>
+        <div class="form-group"><label>Email</label><input type="email" id="cliente-email"></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Dirección</label><input type="text" id="cliente-direccion"></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Notas</label><textarea id="cliente-notas"></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-cliente')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL EQUIPO -->
+<div class="modal-overlay" id="modal-equipo">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-equipo-title">Nuevo Equipo</h3><button class="modal-close" onclick="closeModal('modal-equipo')">×</button></div>
+    <form id="form-equipo" onsubmit="saveEquipo(event)">
+      <input type="hidden" id="equipo-id">
+      <div class="form-grid">
+        <div class="form-group"><label>Cliente *</label><select id="equipo-cliente" required></select></div>
+        <div class="form-group"><label>Tipo *</label>
+          <select id="equipo-tipo" required>
+            <option value="">Seleccionar...</option>
+            <option>PC Escritorio</option><option>Notebook</option><option>Impresora</option>
+            <option>Monitor</option><option>Celular</option><option>Tablet</option>
+            <option>Router/Modem</option><option>Servidor</option><option>Otro</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Marca</label><input type="text" id="equipo-marca"></div>
+        <div class="form-group"><label>Modelo</label><input type="text" id="equipo-modelo"></div>
+        <div class="form-group"><label>N° Serie</label><input type="text" id="equipo-serie"></div>
+        <div class="form-group"><label>Accesorios entregados</label><input type="text" id="equipo-accesorios" placeholder="Ej: Cargador, mouse..."></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Estado físico</label><textarea id="equipo-estado" placeholder="Rayones, golpes, etc."></textarea></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-equipo')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL TICKET -->
+<div class="modal-overlay" id="modal-ticket">
+  <div class="modal">
+    <div class="modal-header"><h3 id="modal-ticket-title">Nuevo Ticket</h3><button class="modal-close" onclick="closeModal('modal-ticket')">×</button></div>
+    <form id="form-ticket" onsubmit="saveTicket(event)">
+      <input type="hidden" id="ticket-id">
+      <div class="form-grid">
+        <div class="form-group"><label>Cliente *</label><select id="ticket-cliente" required onchange="loadEquiposCliente()"></select></div>
+        <div class="form-group"><label>Equipo *</label><select id="ticket-equipo" required></select></div>
+        <div class="form-group" style="grid-column:1/-1;"><label>Motivo / Falla reportada *</label><textarea id="ticket-motivo" required></textarea></div>
+        <div class="form-group"><label>Prioridad</label>
+          <select id="ticket-prioridad">
+            <option value="baja">Baja</option><option value="media" selected>Media</option>
+            <option value="alta">Alta</option><option value="urgente">Urgente</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Técnico asignado</label><input type="text" id="ticket-tecnico"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-ticket')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Crear Ticket</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL DETALLE TICKET -->
+<div class="modal-overlay" id="modal-detalle">
+  <div class="modal" style="max-width:850px;">
+    <div class="modal-header"><h3 id="detalle-title">Ticket</h3><button class="modal-close" onclick="closeModal('modal-detalle')">×</button></div>
+    <div id="detalle-content"></div>
+  </div>
+</div>
+
+<!-- MODAL DIAGNOSTICO -->
+<div class="modal-overlay" id="modal-diagnostico">
+  <div class="modal">
+    <div class="modal-header"><h3>?? Registrar Diagnóstico</h3><button class="modal-close" onclick="closeModal('modal-diagnostico')">×</button></div>
+    <form onsubmit="saveDiagnostico(event)">
+      <input type="hidden" id="diag-ticket-id">
+      <div class="form-group"><label>Diagnóstico técnico *</label><textarea id="diag-texto" required placeholder="Describa lo encontrado en el equipo..."></textarea></div>
+      <div class="form-group"><label>Causa del problema</label><textarea id="diag-causa"></textarea></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-diagnostico')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar Diagnóstico</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL PRESUPUESTO -->
+<div class="modal-overlay" id="modal-presupuesto">
+  <div class="modal">
+    <div class="modal-header"><h3>?? Presupuesto</h3><button class="modal-close" onclick="closeModal('modal-presupuesto')">×</button></div>
+    <form onsubmit="savePresupuesto(event)">
+      <input type="hidden" id="pres-ticket-id">
+      <div class="form-group"><label>Observaciones</label><textarea id="pres-obs"></textarea></div>
+      <div class="form-group">
+        <label>Ítems del presupuesto</label>
+        <div id="pres-items"></div>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="addItemRow()" style="margin-top:8px;">+ Agregar ítem</button>
+      </div>
+      <div class="form-group">
+        <strong>Total: $<span id="pres-total">0.00</span></strong>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-presupuesto')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Guardar Presupuesto</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- MODAL SOLUCION -->
+<div class="modal-overlay" id="modal-solucion">
+  <div class="modal">
+    <div class="modal-header"><h3>? Registrar Solución</h3><button class="modal-close" onclick="closeModal('modal-solucion')">×</button></div>
+    <form onsubmit="saveSolucion(event)">
+      <input type="hidden" id="sol-ticket-id">
+      <div class="form-group"><label>Solución aplicada *</label><textarea id="sol-texto" required placeholder="Describa los trabajos realizados..."></textarea></div>
+      <div class="form-group"><label>Repuestos utilizados</label><textarea id="sol-repuestos"></textarea></div>
+      <div class="form-group"><label>Tiempo dedicado (minutos)</label><input type="number" id="sol-tiempo" min="0"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" onclick="closeModal('modal-solucion')">Cancelar</button>
+        <button type="submit" class="btn btn-success">Finalizar Reparación</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+// ============ DATA LAYER ============
+let db = {
+  clientes: JSON.parse(localStorage.getItem('ts_clientes') || '[]'),
+  equipos: JSON.parse(localStorage.getItem('ts_equipos') || '[]'),
+  tickets: JSON.parse(localStorage.getItem('ts_tickets') || '[]'),
+  nextCliente: parseInt(localStorage.getItem('ts_nextCliente') || '1'),
+  nextEquipo: parseInt(localStorage.getItem('ts_nextEquipo') || '1'),
+  nextTicket: parseInt(localStorage.getItem('ts_nextTicket') || '1'),
+};
+
+function saveDB() {
+  localStorage.setItem('ts_clientes', JSON.stringify(db.clientes));
+  localStorage.setItem('ts_equipos', JSON.stringify(db.equipos));
+  localStorage.setItem('ts_tickets', JSON.stringify(db.tickets));
+  localStorage.setItem('ts_nextCliente', db.nextCliente);
+  localStorage.setItem('ts_nextEquipo', db.nextEquipo);
+  localStorage.setItem('ts_nextTicket', db.nextTicket);
+}
+
+// ============ NAVIGATION ============
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view-' + name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  if (name === 'dashboard') renderDashboard();
+  if (name === 'tickets') renderTickets();
+  if (name === 'clientes') renderClientes();
+  if (name === 'equipos') renderEquipos();
+  if (name === 'config') renderConfig();
+}
+
+function openModal(id) { document.getElementById(id).classList.add('active'); }
+function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+
+// ============ HELPERS ============
+function formatDate(ts) {
+  const d = new Date(ts);
+  return d.toLocaleDateString('es-AR') + ' ' + d.toLocaleTimeString('es-AR', {hour:'2-digit', minute:'2-digit'});
+}
+function getCliente(id) { return db.clientes.find(c => c.id === id); }
+function getEquipo(id) { return db.equipos.find(e => e.id === id); }
+function getTicket(id) { return db.tickets.find(t => t.id === id); }
+function statusLabel(s) {
+  const map = {abierto:'Abierto', diagnostico:'En Diagnóstico', presupuestado:'Presupuestado', reparacion:'En Reparación', finalizado:'Finalizado', entregado:'Entregado'};
+  return map[s] || s;
+}
+
+// ============ DASHBOARD ============
+function renderDashboard() {
+  document.getElementById('date-display').textContent = new Date().toLocaleDateString('es-AR', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+  const abiertos = db.tickets.filter(t => t.estado === 'abierto' || t.estado === 'diagnostico').length;
+  const pendientes = db.tickets.filter(t => t.estado === 'presupuestado').length;
+  const enRep = db.tickets.filter(t => t.estado === 'reparacion').length;
+  const finalizados = db.tickets.filter(t => t.estado === 'finalizado').length;
+  
+  document.getElementById('stats-grid').innerHTML = `
+    <div class="stat-card"><div class="value">${db.tickets.length}</div><div class="label">Total Tickets</div></div>
+    <div class="stat-card orange"><div class="value">${abiertos}</div><div class="label">Abiertos / En Diagnóstico</div></div>
+    <div class="stat-card purple"><div class="value">${pendientes}</div><div class="label">Presupuestos Pendientes</div></div>
+    <div class="stat-card red"><div class="value">${enRep}</div><div class="label">En Reparación</div></div>
+    <div class="stat-card green"><div class="value">${finalizados}</div><div class="label">Finalizados</div></div>
+    <div class="stat-card"><div class="value">${db.clientes.length}</div><div class="label">Clientes</div></div>
+  `;
+  
+  const recent = [...db.tickets].sort((a,b) => b.fechaCreacion - a.fechaCreacion).slice(0, 5);
+  document.getElementById('recent-tickets').innerHTML = recent.length === 0 ? 
+    '<tr><td colspan="5" class="empty-state">No hay tickets aún</td></tr>' :
+    recent.map(t => {
+      const c = getCliente(t.clienteId);
+      const e = getEquipo(t.equipoId);
+      return `<tr style="cursor:pointer" onclick="viewTicket(${t.id})">
+        <td><strong>#${String(t.id).padStart(4,'0')}</strong></td>
+        <td>${c ? c.nombre : 'N/A'}</td>
+        <td>${e ? `${e.tipo} ${e.marca||''}` : 'N/A'}</td>
+        <td><span class="badge badge-${t.estado}">${statusLabel(t.estado)}</span></td>
+        <td>${formatDate(t.fechaCreacion)}</td>
+      </tr>`;
+    }).join('');
+}
+
+// ============ CLIENTES ============
+function renderClientes() {
+  const search = (document.getElementById('search-clientes').value || '').toLowerCase();
+  const filtered = db.clientes.filter(c => 
+    c.nombre.toLowerCase().includes(search) || 
+    (c.telefono||'').includes(search) || 
+    (c.email||'').toLowerCase().includes(search)
+  );
+  const tbody = document.getElementById('clientes-table');
+  tbody.innerHTML = filtered.length === 0 ? 
+    '<tr><td colspan="7" class="empty-state">No hay clientes</td></tr>' :
+    filtered.map(c => {
+      const count = db.tickets.filter(t => t.clienteId === c.id).length;
+      return `<tr>
+        <td><strong>${c.nombre}</strong></td>
+        <td>${c.telefono || '-'}</td>
+        <td>${c.email || '-'}</td>
+        <td>${c.dni || '-'}</td>
+        <td>${c.direccion || '-'}</td>
+        <td><span class="badge badge-abierto">${count}</span></td>
+        <td class="actions-cell">
+          <button class="btn btn-primary btn-sm" onclick="editCliente(${c.id})">??</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteCliente(${c.id})">???</button>
+        </td>
+      </tr>`;
+    }).join('');
+}
+
+function openClienteModal() {
+  document.getElementById('modal-cliente-title').textContent = 'Nuevo Cliente';
+  document.getElementById('form-cliente').reset();
+  document.getElementById('cliente-id').value = '';
+  openModal('modal-cliente');
+}
+
+function editCliente(id) {
+  const c = getCliente(id);
+  document.getElementById('modal-cliente-title').textContent = 'Editar Cliente';
+  document.getElementById('cliente-id').value = c.id;
+  document.getElementById('cliente-nombre').value = c.nombre;
+  document.getElementById('cliente-dni').value = c.dni || '';
+  document.getElementById('cliente-telefono').value = c.telefono;
+  document.getElementById('cliente-email').value = c.email || '';
+  document.getElementById('cliente-direccion').value = c.direccion || '';
+  document.getElementById('cliente-notas').value = c.notas || '';
+  openModal('modal-cliente');
+}
+
+function saveCliente(e) {
+  e.preventDefault();
+  const id = document.getElementById('cliente-id').value;
+  const data = {
+    nombre: document.getElementById('cliente-nombre').value,
+    dni: document.getElementById('cliente-dni').value,
+    telefono: document.getElementById('cliente-telefono').value,
+    email: document.getElementById('cliente-email').value,
+    direccion: document.getElementById('cliente-direccion').value,
+    notas: document.getElementById('cliente-notas').value,
+  };
+  if (id) {
+    const idx = db.clientes.findIndex(c => c.id == id);
+    db.clientes[idx] = {...db.clientes[idx], ...data};
+  } else {
+    data.id = db.nextCliente++;
+    data.fechaCreacion = Date.now();
+    db.clientes.push(data);
+  }
+  saveDB();
+  closeModal('modal-cliente');
+  renderClientes();
+}
+
+function deleteCliente(id) {
+  if (!confirm('¿Eliminar este cliente? Sus equipos y tickets asociados quedarán sin cliente.')) return;
+  db.clientes = db.clientes.filter(c => c.id !== id);
+  saveDB();
+  renderClientes();
+}
+
+// ============ EQUIPOS ============
+function renderEquipos() {
+  const search = (document.getElementById('search-equipos').value || '').toLowerCase();
+  const filtered = db.equipos.filter(e => {
+    const c = getCliente(e.clienteId);
+    const txt = `${e.tipo} ${e.marca||''} ${e.modelo||''} ${e.serie||''} ${c?c.nombre:''}`.toLowerCase();
+    return txt.includes(search);
+  });
+  const tbody = document.getElementById('equipos-table');
+  tbody.innerHTML = filtered.length === 0 ?
+    '<tr><td colspan="6" class="empty-state">No hay equipos registrados</td></tr>' :
+    filtered.map(e => {
+      const c = getCliente(e.clienteId);
+      return `<tr>
+        <td><strong>${e.tipo}</strong></td>
+        <td>${e.marca||''} ${e.modelo||''}</td>
+        <td>${e.serie || '-'}</td>
+        <td>${c ? c.nombre : 'N/A'}</td>
+        <td>${e.accesorios || '-'}</td>
+        <td class="actions-cell">
+          <button class="btn btn-primary btn-sm" onclick="editEquipo(${e.id})">??</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteEquipo(${e.id})">???</button>
+        </td>
+      </tr>`;
+    }).join('');
+}
+
+function openEquipoModal() {
+  document.getElementById('modal-equipo-title').textContent = 'Nuevo Equipo';
+  document.getElementById('form-equipo').reset();
+  document.getElementById('equipo-id').value = '';
+  const sel = document.getElementById('equipo-cliente');
+  sel.innerHTML = '<option value="">Seleccionar cliente...</option>' + 
+    db.clientes.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+  openModal('modal-equipo');
+}
+
+function editEquipo(id) {
+  const e = getEquipo(id);
+  document.getElementById('modal-equipo-title').textContent = 'Editar Equipo';
+  const sel = document.getElementById('equipo-cliente');
+  sel.innerHTML = '<option value="">Seleccionar cliente...</option>' + 
+    db.clientes.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+  document.getElementById('equipo-id').value = e.id;
+  document.getElementById('equipo-cliente').value = e.clienteId;
+  document.getElementById('equipo-tipo').value = e.tipo;
+  document.getElementById('equipo-marca').value = e.marca || '';
+  document.getElementById('equipo-modelo').value = e.modelo || '';
+  document.getElementById('equipo-serie').value = e.serie || '';
+  document.getElementById('equipo-accesorios').value = e.accesorios || '';
+  document.getElementById('equipo-estado').value = e.estado || '';
+  openModal('modal-equipo');
+}
+
+function saveEquipo(e) {
+  e.preventDefault();
+  const id = document.getElementById('equipo-id').value;
+  const data = {
+    clienteId: parseInt(document.getElementById('equipo-cliente').value),
+    tipo: document.getElementById('equipo-tipo').value,
+    marca: document.getElementById('equipo-marca').value,
+    modelo: document.getElementById('equipo-modelo').value,
+    serie: document.getElementById('equipo-serie').value,
+    accesorios: document.getElementById('equipo-accesorios').value,
+    estado: document.getElementById('equipo-estado').value,
+  };
+  if (id) {
+    const idx = db.equipos.findIndex(e => e.id == id);
+    db.equipos[idx] = {...db.equipos[idx], ...data};
+  } else {
+    data.id = db.nextEquipo++;
+    data.fechaCreacion = Date.now();
+    db.equipos.push(data);
+  }
+  saveDB();
+  closeModal('modal-equipo');
+  renderEquipos();
+}
+
+function deleteEquipo(id) {
+  if (!confirm('¿Eliminar este equipo?')) return;
+  db.equipos = db.equipos.filter(e => e.id !== id);
+  saveDB();
+  renderEquipos();
+}
+
+// ============ TICKETS ============
+function renderTickets() {
+  const search = (document.getElementById('search-tickets').value || '').toLowerCase();
+  const statusFilter = document.getElementById('filter-status').value;
+  const filtered = db.tickets.filter(t => {
+    if (statusFilter && t.estado !== statusFilter) return false;
+    const c = getCliente(t.clienteId);
+    const e = getEquipo(t.equipoId);
+    const txt = `${t.id} ${c?c.nombre:''} ${e?e.tipo+' '+e.marca:''} ${t.motivo}`.toLowerCase();
+    return txt.includes(search);
+  }).sort((a,b) => b.fechaCreacion - a.fechaCreacion);
+  
+  const tbody = document.getElementById('tickets-table');
+  tbody.innerHTML = filtered.length === 0 ?
+    '<tr><td colspan="8" class="empty-state">No hay tickets</td></tr>' :
+    filtered.map(t => {
+      const c = getCliente(t.clienteId);
+      const e = getEquipo(t.equipoId);
+      const total = t.presupuesto ? t.presupuesto.items.reduce((s,i) => s + (parseFloat(i.precio)||0) * (parseInt(i.cantidad)||1), 0) : 0;
+      return `<tr>
+        <td><strong>#${String(t.id).padStart(4,'0')}</strong></td>
+        <td>${c ? c.nombre : 'N/A'}</td>
+        <td>${e ? `${e.tipo} ${e.marca||''}` : 'N/A'}</td>
+        <td>${t.motivo.substring(0,40)}${t.motivo.length>40?'...':''}</td>
+        <td><span class="badge badge-${t.estado}">${statusLabel(t.estado)}</span></td>
+        <td>${total > 0 ? '$'+total.toFixed(2) : '-'}</td>
+        <td>${formatDate(t.fechaCreacion)}</td>
+        <td class="actions-cell">
+          <button class="btn btn-primary btn-sm" onclick="viewTicket(${t.id})">???</button>
+          <button class="btn btn-danger btn-sm" onclick="deleteTicket(${t.id})">?</button>
+        </td>
+      </tr>`;
+    }).join('');
+}
+
+function openTicketModal() {
+  if (db.clientes.length === 0) { alert('Primero debe crear un cliente'); return; }
+  if (db.equipos.length === 0) { alert('Primero debe registrar un equipo'); return; }
+  document.getElementById('modal-ticket-title').textContent = 'Nuevo Ticket';
+  document.getElementById('form-ticket').reset();
+  document.getElementById('ticket-id').value = '';
+  const sel = document.getElementById('ticket-cliente');
+  sel.innerHTML = '<option value="">Seleccionar cliente...</option>' + 
+    db.clientes.map(c => `<option value="${c.id}">${c.nombre}</option>`).join('');
+  document.getElementById('ticket-equipo').innerHTML = '<option value="">Primero seleccione cliente</option>';
+  openModal('modal-ticket');
+}
+
+function loadEquiposCliente() {
+  const clienteId = parseInt(document.getElementById('ticket-cliente').value);
+  const sel = document.getElementById('ticket-equipo');
+  const equipos = db.equipos.filter(e => e.clienteId === clienteId);
+  sel.innerHTML = equipos.length === 0 ? 
+    '<option value="">Sin equipos registrados</option>' :
+    '<option value="">Seleccionar equipo...</option>' + 
+    equipos.map(e => `<option value="${e.id}">${e.tipo} - ${e.marca||''} ${e.modelo||''} ${e.serie?'('+e.serie+')':''}</option>`).join('');
+}
+
+function saveTicket(e) {
+  e.preventDefault();
+  const id = document.getElementById('ticket-id').value;
+  const data = {
+    clienteId: parseInt(document.getElementById('ticket-cliente').value),
+    equipoId: parseInt(document.getElementById('ticket-equipo').value),
+    motivo: document.getElementById('ticket-motivo').value,
+    prioridad: document.getElementById('ticket-prioridad').value,
+    tecnico: document.getElementById('ticket-tecnico').value,
+  };
+  if (id) {
+    const idx = db.tickets.findIndex(t => t.id == id);
+    db.tickets[idx] = {...db.tickets[idx], ...data};
+  } else {
+    data.id = db.nextTicket++;
+    data.estado = 'abierto';
+    data.fechaCreacion = Date.now();
+    data.historial = [{fecha: Date.now(), tipo: 'creacion', texto: 'Ticket creado'}];
+    db.tickets.push(data);
+  }
+  saveDB();
+  closeModal('modal-ticket');
+  renderTickets();
+}
+
+function deleteTicket(id) {
+  if (!confirm('¿Eliminar este ticket?')) return;
+  db.tickets = db.tickets.filter(t => t.id !== id);
+  saveDB();
+  renderTickets();
+}
+
+// ============ DETALLE TICKET ============
+function viewTicket(id) {
+  const t = getTicket(id);
+  const c = getCliente(t.clienteId);
+  const e = getEquipo(t.equipoId);
+  document.getElementById('detalle-title').textContent = `Ticket #${String(t.id).padStart(4,'0')}`;
+  
+  let html = `
+    <div class="ticket-detail-section">
+      <h4>?? Información General</h4>
+      <div class="info-row"><span class="info-label">Estado:</span><span class="info-value"><span class="badge badge-${t.estado}">${statusLabel(t.estado)}</span></span></div>
+      <div class="info-row"><span class="info-label">Prioridad:</span><span class="info-value">${t.prioridad || 'media'}</span></div>
+      <div class="info-row"><span class="info-label">Técnico:</span><span class="info-value">${t.tecnico || '-'}</span></div>
+      <div class="info-row"><span class="info-label">Fecha creación:</span><span class="info-value">${formatDate(t.fechaCreacion)}</span></div>
+    </div>
+    <div class="ticket-detail-section">
+      <h4>?? Cliente</h4>
+      <div class="info-row"><span class="info-label">Nombre:</span><span class="info-value">${c?c.nombre:'N/A'}</span></div>
+      <div class="info-row"><span class="info-label">Teléfono:</span><span class="info-value">${c?c.telefono:'-'}</span></div>
+      <div class="info-row"><span class="info-label">Email:</span><span class="info-value">${c?c.email||'-':'-'}</span></div>
+    </div>
+    <div class="ticket-detail-section">
+      <h4>?? Equipo</h4>
+      <div class="info-row"><span class="info-label">Tipo:</span><span class="info-value">${e?e.tipo:'N/A'}</span></div>
+      <div class="info-row"><span class="info-label">Marca/Modelo:</span><span class="info-value">${e?`${e.marca||''} ${e.modelo||''}`:'-'}</span></div>
+      <div class="info-row"><span class="info-label">Serie:</span><span class="info-value">${e?e.serie||'-':'-'}</span></div>
+      <div class="info-row"><span class="info-label">Accesorios:</span><span class="info-value">${e?e.accesorios||'-':'-'}</span></div>
+    </div>
+    <div class="ticket-detail-section">
+      <h4>?? Falla Reportada</h4>
+      <p style="font-size:14px; color:#374151;">${t.motivo}</p>
+    </div>`;
+  
+  if (t.diagnostico) {
+    html += `<div class="ticket-detail-section">
+      <h4>?? Diagnóstico</h4>
+      <div class="info-row"><span class="info-label">Fecha:</span><span class="info-value">${formatDate(t.diagnostico.fecha)}</span></div>
+      <div class="info-row"><span class="info-label">Diagnóstico:</span><span class="info-value">${t.diagnostico.texto}</span></div>
+      ${t.diagnostico.causa ? `<div class="info-row"><span class="info-label">Causa:</span><span class="info-value">${t.diagnostico.causa}</span></div>` : ''}
+    </div>`;
+  }
+  
+  if (t.presupuesto) {
+    const total = t.presupuesto.items.reduce((s,i) => s + (parseFloat(i.precio)||0) * (parseInt(i.cantidad)||1), 0);
+    html += `<div class="ticket-detail-section">
+      <h4>?? Presupuesto ${t.presupuesto.aprobado ? '<span class="badge badge-finalizado">APROBADO</span>' : '<span class="badge badge-diagnostico">PENDIENTE</span>'}</h4>
+      ${t.presupuesto.observaciones ? `<p style="font-size:13px; color:#6b7280; margin-bottom:10px;">${t.presupuesto.observaciones}</p>` : ''}
+      <table style="font-size:13px;">
+        <thead><tr><th>Descripción</th><th>Cant.</th><th>P. Unit.</th><th>Subtotal</th></tr></thead>
+        <tbody>${t.presupuesto.items.map(i => `<tr>
+          <td>${i.descripcion}</td><td>${i.cantidad}</td><td>$${parseFloat(i.precio).toFixed(2)}</td>
+          <td><strong>$${(parseFloat(i.precio)*parseInt(i.cantidad)).toFixed(2)}</strong></td>
+        </tr>`).join('')}
+        <tr style="background:#f0f9ff;"><td colspan="3" style="text-align:right;"><strong>TOTAL:</strong></td><td><strong>$${total.toFixed(2)}</strong></td></tr>
+        </tbody>
+      </table>
+    </div>`;
+  }
+  
+  if (t.solucion) {
+    html += `<div class="ticket-detail-section">
+      <h4>? Solución Aplicada</h4>
+      <div class="info-row"><span class="info-label">Fecha:</span><span class="info-value">${formatDate(t.solucion.fecha)}</span></div>
+      <div class="info-row"><span class="info-label">Solución:</span><span class="info-value">${t.solucion.texto}</span></div>
+      ${t.solucion.repuestos ? `<div class="info-row"><span class="info-label">Repuestos:</span><span class="info-value">${t.solucion.repuestos}</span></div>` : ''}
+      ${t.solucion.tiempo ? `<div class="info-row"><span class="info-label">Tiempo:</span><span class="info-value">${t.solucion.tiempo} min</span></div>` : ''}
+    </div>`;
+  }
+  
+  // Historial
+  html += `<div class="ticket-detail-section"><h4>?? Historial</h4><div class="timeline">`;
+  (t.historial || []).slice().reverse().forEach(h => {
+    html += `<div class="timeline-item"><div class="timeline-date">${formatDate(h.fecha)}</div><div class="timeline-content">${h.texto}</div></div>`;
+  });
+  html += `</div></div>`;
+  
+  // Botones de acción según estado
+  html += `<div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:15px;">`;
+  if (t.estado === 'abierto') {
+    html += `<button class="btn btn-warning" onclick="changeStatus(${t.id}, 'diagnostico')">?? Pasar a Diagnóstico</button>`;
+  }
+  if (t.estado === 'diagnostico') {
+    html += `<button class="btn btn-primary" onclick="openDiagnostico(${t.id})">?? Registrar Diagnóstico</button>`;
+    html += `<button class="btn btn-success" onclick="openPresupuesto(${t.id})">?? Crear Presupuesto</button>`;
+  }
+  if (t.estado === 'presupuestado') {
+    if (t.presupuesto && !t.presupuesto.aprobado) {
+      html += `<button class="btn btn-success" onclick="aprobarPresupuesto(${t.id})">? Aprobar Presupuesto</button>`;
+    }
+    html += `<button class="btn btn-primary" onclick="changeStatus(${t.id}, 'reparacion')">?? Iniciar Reparación</button>`;
+  }
+  if (t.estado === 'reparacion') {
+    html += `<button class="btn btn-success" onclick="openSolucion(${t.id})">? Registrar Solución</button>`;
+  }
+  if (t.estado === 'finalizado') {
+    html += `<button class="btn btn-primary" onclick="changeStatus(${t.id}, 'entregado')">?? Marcar como Entregado</button>`;
+  }
+  if (t.estado !== 'entregado') {
+    html += `<button class="btn btn-danger" onclick="changeStatus(${t.id}, 'abierto')">?? Reabrir</button>`;
+  }
+  html += `</div>`;
+  
+  document.getElementById('detalle-content').innerHTML = html;
+  openModal('modal-detalle');
+}
+
+function changeStatus(id, newStatus) {
+  const t = getTicket(id);
+  t.estado = newStatus;
+  t.historial.push({fecha: Date.now(), tipo: 'estado', texto: `Estado cambiado a: ${statusLabel(newStatus)}`});
+  saveDB();
+  closeModal('modal-detalle');
+  renderTickets();
+  viewTicket(id);
+}
+
+// ============ DIAGNOSTICO ============
+function openDiagnostico(id) {
+  document.getElementById('diag-ticket-id').value = id;
+  document.getElementById('diag-texto').value = '';
+  document.getElementById('diag-causa').value = '';
+  openModal('modal-diagnostico');
+}
+
+function saveDiagnostico(e) {
+  e.preventDefault();
+  const id = parseInt(document.getElementById('diag-ticket-id').value);
+  const t = getTicket(id);
+  t.diagnostico = {
+    fecha: Date.now(),
+    texto: document.getElementById('diag-texto').value,
+    causa: document.getElementById('diag-causa').value,
+  };
+  t.historial.push({fecha: Date.now(), tipo: 'diagnostico', texto: 'Diagnóstico registrado'});
+  saveDB();
+  closeModal('modal-diagnostico');
+  closeModal('modal-detalle');
+  viewTicket(id);
+}
+
+// ============ PRESUPUESTO ============
+function openPresupuesto(id) {
+  document.getElementById('pres-ticket-id').value = id;
+  const t = getTicket(id);
+  document.getElementById('pres-obs').value = t.presupuesto ? t.presupuesto.observaciones || '' : '';
+  const container = document.getElementById('pres-items');
+  container.innerHTML = '';
+  if (t.presupuesto && t.presupuesto.items) {
+    t.presupuesto.items.forEach(i => addItemRow(i));
+  } else {
+    addItemRow();
+  }
+  updateTotal();
+  openModal('modal-presupuesto');
+}
+
+function addItemRow(item = null) {
+  const container = document.getElementById('pres-items');
+  const row = document.createElement('div');
+  row.className = 'item-row';
+  row.innerHTML = `
+    <input type="text" placeholder="Descripción" class="item-desc" value="${item?item.descripcion:''}">
+    <input type="number" placeholder="Cant." class="item-cant" value="${item?item.cantidad:1}" min="1" oninput="updateTotal()">
+    <input type="number" placeholder="Precio" class="item-precio" value="${item?item.precio:''}" step="0.01" oninput="updateTotal()">
+    <input type="text" class="item-subtotal" readonly value="$0.00">
+    <button type="button" class="btn btn-danger btn-sm" onclick="this.parentElement.remove(); updateTotal();">×</button>
+  `;
+  container.appendChild(row);
+  updateTotal();
+}
+
+function updateTotal() {
+  let total = 0;
+  document.querySelectorAll('.item-row').forEach(row => {
+    const cant = parseFloat(row.querySelector('.item-cant').value) || 0;
+    const precio = parseFloat(row.querySelector('.item-precio').value) || 0;
+    const sub = cant * precio;
+    row.querySelector('.item-subtotal').value = '$' + sub.toFixed(2);
+    total += sub;
+  });
+  document.getElementById('pres-total').textContent = total.toFixed(2);
+}
+
+function savePresupuesto(e) {
+  e.preventDefault();
+  const id = parseInt(document.getElementById('pres-ticket-id').value);
+  const t = getTicket(id);
+  const items = [];
+  document.querySelectorAll('.item-row').forEach(row => {
+    const desc = row.querySelector('.item-desc').value.trim();
+    const cant = row.querySelector('.item-cant').value;
+    const precio = row.querySelector('.item-precio').value;
+    if (desc && cant && precio) items.push({descripcion: desc, cantidad: cant, precio: precio});
+  });
+  t.presupuesto = {
+    fecha: Date.now(),
+    observaciones: document.getElementById('pres-obs').value,
+    items: items,
+    aprobado: t.presupuesto ? t.presupuesto.aprobado : false,
+  };
+  t.historial.push({fecha: Date.now(), tipo: 'presupuesto', texto: 'Presupuesto generado'});
+  saveDB();
+  closeModal('modal-presupuesto');
+  closeModal('modal-detalle');
+  viewTicket(id);
+}
+
+function aprobarPresupuesto(id) {
+  const t = getTicket(id);
+  t.presupuesto.aprobado = true;
+  t.historial.push({fecha: Date.now(), tipo: 'aprobacion', texto: 'Presupuesto aprobado por el cliente'});
+  saveDB();
+  closeModal('modal-detalle');
+  viewTicket(id);
+}
+
+// ============ SOLUCION ============
+function openSolucion(id) {
+  document.getElementById('sol-ticket-id').value = id;
+  document.getElementById('sol-texto').value = '';
+  document.getElementById('sol-repuestos').value = '';
+  document.getElementById('sol-tiempo').value = '';
+  openModal('modal-solucion');
+}
+
+function saveSolucion(e) {
+  e.preventDefault();
+  const id = parseInt(document.getElementById('sol-ticket-id').value);
+  const t = getTicket(id);
+  t.solucion = {
+    fecha: Date.now(),
+    texto: document.getElementById('sol-texto').value,
+    repuestos: document.getElementById('sol-repuestos').value,
+    tiempo: document.getElementById('sol-tiempo').value,
+  };
+  t.estado = 'finalizado';
+  t.historial.push({fecha: Date.now(), tipo: 'solucion', texto: 'Reparación finalizada'});
+  saveDB();
+  closeModal('modal-solucion');
+  closeModal('modal-detalle');
+  renderTickets();
+  viewTicket(id);
+}
+
+// ============ CONFIG ============
+function renderConfig() {
+  document.getElementById('cfg-clientes').textContent = db.clientes.length;
+  document.getElementById('cfg-equipos').textContent = db.equipos.length;
+  document.getElementById('cfg-tickets').textContent = db.tickets.length;
+}
+
+function exportData() {
+  const data = JSON.stringify(db, null, 2);
+  const blob = new Blob([data], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `pc-tecnologia-backup-${new Date().toISOString().split('T')[0]}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (!confirm('¿Reemplazar todos los datos actuales con los del archivo?')) return;
+      db = data;
+      saveDB();
+      alert('Datos importados correctamente');
+      renderDashboard();
+    } catch(err) { alert('Error al importar: ' + err.message); }
+  };
+  reader.readAsText(file);
+}
+
+function clearAllData() {
+  if (!confirm('?? ¿Borrar TODOS los datos? Esta acción no se puede deshacer.')) return;
+  if (!confirm('¿Estás completamente seguro?')) return;
+  localStorage.clear();
+  db = {clientes:[], equipos:[], tickets:[], nextCliente:1, nextEquipo:1, nextTicket:1};
+  renderDashboard();
+  alert('Todos los datos han sido eliminados');
+}
+
+// ============ INIT ============
+renderDashboard();
+</script>
+</body>
+</html>
